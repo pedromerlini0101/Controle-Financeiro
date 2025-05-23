@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Finanças</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+  <script src="//unpkg.com/alpinejs" defer></script>
+  <script src="https://kit.fontawesome.com/1073bdefd9.js" crossorigin="anonymous"></script>
+</head>
+
+<body x-data="{pagina: 'despesas'}">
+  <header>
+    <div class="metricas">
+      <div id="saldo">
+        <h2>Saldo Mensal</h2>
+        <p>R$2.000,00</p>
+      </div>
+      <div id="receita">
+        <h2>Receita Mensal</h2>
+        <p>R$5.000,00</p>
+      </div>
+      <div id="despesa">
+        <h2>Gasto Mensal</h2>
+        <p>R$3.000,00</p>
+      </div>
+    </div>
+    <br>
+    <div class="paginas">
+      <p @click="pagina = $el.textContent" :class="{'selected': pagina === $el.textContent}">despesas</p>
+      <p @click="pagina = $el.textContent" :class="{'selected': pagina === $el.textContent}">receitas</p>
+    </div>
+  </header>
+  <br>
+  <main x-data="{modalOpen: false}">
+    <h2 @click="modalOpen = true" x-text="'+ adicionar '+ pagina" id="botao-adicionar-item"></h2>
+    <modal x-show="modalOpen">
+      <div @click.away="modalOpen = false" id="container">
+        <div id="descricao">
+          <label for="descricao-input">Descrição<span style="color: tomato">*</span></label>
+          <br>
+          <input id="descricao-input" placeholder="Ex: Compras do mês">
+          <br><br>
+        </div>
+        <div id="categoria">
+          <label for="categoria-input">Categoria<span style="color: tomato">*</span></label>
+          <br>
+          <select id="categoria-input">
+            <option>Alimentação</option>
+            <option>Saúde</option>
+            <option>Lazer</option>
+            <option>Contas</option>
+            <option>Personalizado</option>
+          </select>
+          <br><br>
+        </div>
+        <div id="valor">
+          <label for="valor-input">Valor<span style="color: tomato">*</span></label>
+          <br>
+          <input id="valor-input" placeholder="Ex: 350.50" type="number">
+          <br><br>
+        </div>
+        <div id="data-inicio">
+          <label x-text="pagina==='despesas'? 'Data de Início':'Data'" for="dataI-input"></label>
+          <br>
+          <input id="dataI-input" type="date" :value="new Date().toISOString().split('T')[0]">
+          <br><br>
+        </div>
+        <div x-show="pagina === 'despesas'" id="data-fim">
+          <label for="dataF-input">Data de Fim</label>
+          <br>
+          <input id="dataF-input" type="date" :value="new Date().toISOString().split('T')[0]">
+          <br><br>
+        </div>
+        <div id="recorrente">
+          <label>recorrente (acontece todo mês)?<span style="color: red">*</span></label>
+          <br>
+          <select>
+            <option>sim</option>
+            <option>não</option>
+          </select>
+          <br><br>
+        </div>
+        <div id="tipo-valor">
+          <label for="">tipo de valor<span style="color: red">*</span></label>
+          <br>
+          <select>
+            <option>fixo</option>
+            <option>variável</option>
+          </select>
+          <br><br>
+        </div>
+        <button id="add-button">adicionar</button>
+      </div>
+    </modal>
+  </main>
+  <script src="main.js"></script>
+</body>
+</html>
