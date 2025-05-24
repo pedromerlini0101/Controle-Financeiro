@@ -12,6 +12,10 @@ body {
   color: #333;
 }
 
+[x-cloak] {
+  display: none !important;
+}
+
 .metricas {
   display: flex;
   width: 100%;
@@ -149,6 +153,54 @@ select {
   padding: 8px;
   width: 100%;
   font-size: 1rem;
+}
+
+#lista-despesas,
+#lista-receitas,
+#lista-metas {
+  width: 100%;
+}
+
+.item {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-left: 4px solid;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  font-size: 0.95rem;
+  width: 100%;
+}
+
+.item.despesa {
+  border-left-color: #ef4444; /* vermelho */
+}
+
+.item.receita {
+  border-left-color: #10b981; /* verde */
+}
+
+.item.meta {
+  border-left-color: #f59e0b; /* amarelo */
+}
+
+.item strong {
+  display: block;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: #111827;
+}
+
+.item p {
+  margin: 0.25rem 0;
+  color: #374151;
+  line-height: 1.4;
+}
+
+.item p span {
+  font-weight: 500;
+  color: #111827;
 }
 
 @media screen and (min-width: 720px) {
