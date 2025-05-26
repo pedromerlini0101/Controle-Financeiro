@@ -6,13 +6,18 @@ $('modal > .despesas').on('submit', function(e) {
     descricao: dados.get('descricao'),
     categoria: dados.get('categoria'),
     valor: dados.get('valor'),
-    dataInicial: dados.get('data inicial'),
-    dataFinal: dados.get('data final'),
+    dataInicial: new Date(dados.get('data inicial')).toLocaleDateString(),
+    dataFinal: new Date(dados.get('data final')).toLocaleDateString(),
     recorrente: dados.get('recorrente'),
     tipoValor: dados.get('tipo valor')
   }
 
   renderDespesa(despesa);
+  this.reset(); // limpa o formulário
+  
+  // Repor as datas com a data atual
+  const hoje = new Date().toISOString().split('T')[0];
+  $(this).find('input[type="date"]').val(hoje);
 });
 
 $('modal > .receitas').on('submit', function(e) {
@@ -23,12 +28,17 @@ $('modal > .receitas').on('submit', function(e) {
     descricao: dados.get('descricao'),
     categoria: dados.get('categoria'),
     valor: dados.get('valor'),
-    data: dados.get('data'),
+    data: new Date(dados.get('data')).toLocaleDateString(),
     recorrente: dados.get('recorrente'),
     tipoValor: dados.get('tipo valor')
   }
 
   renderReceita(receita);
+  this.reset();
+  
+  // Repor as datas com a data atual
+  const hoje = new Date().toISOString().split('T')[0];
+  $(this).find('input[type="date"]').val(hoje);
 });
 
 $('modal > .metas').on('submit', function(e) {
@@ -37,11 +47,16 @@ $('modal > .metas').on('submit', function(e) {
 
   const meta = {
     descricao: dados.get('descricao'),
-    dataInicial: dados.get('data inicial'),
-    dataFinal: dados.get('data final'),
+    dataInicial: new Date(dados.get('data inicial')).toLocaleDateString(),
+    dataFinal: new Date(dados.get('data final')).toLocaleDateString(),
   }
 
   renderMeta(meta);
+  this.reset();
+  
+  // Repor as datas com a data atual
+  const hoje = new Date().toISOString().split('T')[0];
+  $(this).find('input[type="date"]').val(hoje);
 });
 
 function renderDespesa(despesa) {

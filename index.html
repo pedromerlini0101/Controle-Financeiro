@@ -11,8 +11,11 @@
   <script src="https://kit.fontawesome.com/1073bdefd9.js" crossorigin="anonymous"></script>
 </head>
 
-<body x-data="{pagina: 'despesas'}">
+<body x-data="{pagina: 'despesas', menuOpen: false}">
   <header>
+    <div class="cabecalho">
+      <i @click="menuOpen = !menuOpen" class="fas fa-bars"></i>
+    </div>
     <div class="metricas">
       <div id="saldo">
         <h2>Saldo Mensal</h2>
@@ -34,6 +37,32 @@
       <p @click="pagina = $el.textContent" :class="{'selected': pagina === $el.textContent}">metas</p>
     </div>
   </header>
+  <nav :style="`left: ${menuOpen? '0px':'-100%'}`">
+    <br>
+    <div id="option">
+      <i class="fas fa-home"></i>
+      <p>Principal</p>
+    </div>
+    <br>
+    
+    <div id="option">
+      <i class="fa-solid fa-chart-line"></i>
+      <p>Gráficos</p>
+    </div>
+    <br>
+    
+    <div id="option">
+      <i class="fas fa-file"></i>
+      <p>Folhas</p>
+    </div>
+    <br>
+    
+    <div id="option">
+      <i class="fa-solid fa-microchip"></i>
+      <p>AI</p>
+    </div>
+    <br>
+  </nav>
   <br>
   <main x-data="{modalOpen: false}">
     <h2 @click="modalOpen = true" x-text="'+ adicionar '+ pagina" id="botao-adicionar-item"></h2>
@@ -46,16 +75,17 @@
           <input required name="descricao" id="descricao-input" placeholder="Ex: Compras do mês">
           <br><br>
         </div>
-        <div id="categoria">
+        <div x-data="{categoria: ''}" id="categoria">
           <label for="categoria-input">Categoria<span style="color: tomato">*</span></label>
           <br>
-          <select name="categoria" id="categoria-input">
+          <select x-model="categoria" name="categoria" id="categoria-input">
             <option>Alimentação</option>
             <option>Saúde</option>
             <option>Lazer</option>
             <option>Contas</option>
             <option>Personalizado</option>
           </select>
+          <input x-show="categoria === 'Personalizado'" placeholder="Ex: Outro">
           <br><br>
         </div>
         <div id="valor">
@@ -106,10 +136,10 @@
           <input required name="descricao" id="descricao-input" placeholder="Ex: Salário">
           <br><br>
         </div>
-        <div id="categoria">
+        <div x-data="{categoria: ''}" id="categoria">
           <label for="categoria-input">Categoria<span style="color: tomato">*</span></label>
           <br>
-          <select name="categoria" id="categoria-input">
+          <select x-model="categoria" name="categoria" id="categoria-input">
             <option>Salário</option>
             <option>Bico</option>
             <option>Comissões</option>
@@ -117,6 +147,7 @@
             <option>Vendas</option>
             <option>Personalizado</option>
           </select>
+          <input x-show="categoria === 'Personalizado'" placeholder="Ex: Outro">
           <br><br>
         </div>
         <div id="valor">
@@ -158,7 +189,7 @@
         <div id="descricao">
           <label for="descricao-input">Descrição<span style="color: tomato">*</span></label>
           <br>
-          <input required name="descricao" id="descricao-input" placeholder="Ex: Compras do mês">
+          <input required name="descricao" id="descricao-input" placeholder="Ex: Economizar R$1.000,00">
           <br><br>
         </div>
         <div id="data-inicio">

@@ -70,6 +70,19 @@ header .paginas p.selected {
   font-weight: 700;
 }
 
+.cabecalho {
+  padding: 15px 20px;
+  color: white;
+  background-color: dodgerblue;
+  border-bottom: 1px solid;
+  font-size: 24px;
+}
+
+.cabecalho i {
+  position: relative;
+  z-index: 999;
+}
+
 main {
   display: flex;
   flex-direction: column;
@@ -203,6 +216,32 @@ select {
   color: #111827;
 }
 
+nav {
+  width: 60%;
+  height: 100dvh;
+  position: fixed;
+  top: 0;
+  left: -100%;
+  background-color: #222;
+  color: white;
+  transition: left 0.3s ease;
+  z-index: 0;
+  padding-top: 75px;
+  overflow-y: auto;
+}
+
+nav #option {
+  display: inline-flex;
+  gap: 20px;
+  padding-left: 20px;
+  padding-bottom: 20px;
+  font-size: 1.1rem;
+}
+
+nav #option:active {
+  opacity: 0.5;
+}
+
 @media screen and (min-width: 720px) {
   modal #container {
     display: grid;
@@ -216,5 +255,9 @@ select {
     margin-left: 50%;
     transform: translateX(-50%);
     width: 60%;
+  }
+  
+  .metricas div {
+    min-width: 33%;
   }
 }
