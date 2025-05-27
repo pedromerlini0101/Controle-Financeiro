@@ -85,7 +85,7 @@
             <option>Contas</option>
             <option>Personalizado</option>
           </select>
-          <input x-show="categoria === 'Personalizado'" placeholder="Ex: Outro">
+          <input :required="categoria === 'Personalizado'" x-show="categoria === 'Personalizado'" name="categoria-personalizado" placeholder="Ex: Outro">
           <br><br>
         </div>
         <div id="valor">
@@ -147,7 +147,7 @@
             <option>Vendas</option>
             <option>Personalizado</option>
           </select>
-          <input x-show="categoria === 'Personalizado'" placeholder="Ex: Outro">
+          <input :required="categoria === 'Personalizado'" x-show="categoria === 'Personalizado'" name="categoria-personalizado" placeholder="Ex: Outro">
           <br><br>
         </div>
         <div id="valor">
