@@ -295,6 +295,27 @@ nav #option:active {
   opacity: 0.5;
 }
 
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin: 5px 8px 5px 0;
+  user-select: none;
+}
+
+.badge-recorrente {
+  background-color: #10b981; /* verde */
+  color: white;
+}
+
+.badge-tipo {
+  background-color: #3b82f6; /* azul */
+  color: white;
+}
+
+
 /* Responsivo */
 @media screen and (min-width: 720px) {
   modal #container {
