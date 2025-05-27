@@ -1,21 +1,26 @@
+/* Reset básico */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* Corpo da página */
 body {
   width: 100vw;
-  height: 100dvh;
+  height: 100dvh; /* vh dinâmico */
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: #f9fafb;
   color: #333;
+  overflow-x: hidden; /* Evita scroll horizontal indesejado */
 }
 
+/* Alpine.js: esconder elementos até carregamento */
 [x-cloak] {
   display: none !important;
 }
 
+/* Container das métricas com scroll horizontal */
 .metricas {
   display: flex;
   width: 100%;
@@ -24,8 +29,10 @@ body {
   overflow-x: auto;
   padding: 20px;
   scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch; /* scroll suave no iOS */
 }
 
+/* Cartões das métricas */
 .metricas div {
   min-width: 75%;
   height: 100%;
@@ -35,33 +42,42 @@ body {
   border: 1px solid #ddd;
   border-radius: 16px;
   padding: 16px;
-  background-color: white;
+  background-color: #fff;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
   scroll-snap-align: start;
   text-align: center;
+  transition: box-shadow 0.3s ease;
 }
 
+.metricas div:hover {
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+}
+
+/* Texto dentro dos cards */
 .metricas div p {
   color: #6b7280;
   font-weight: 600;
   font-size: 1.4rem;
 }
 
+/* Header páginas (navegação) */
 header .paginas {
   width: 100%;
   display: flex;
   justify-content: space-evenly;
   font-size: 1rem;
-  background-color: white;
+  background-color: #fff;
   padding: 10px 0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
+/* Itens da navegação */
 header .paginas p {
   font-size: 1.2rem;
   padding: 5px 10px;
   border-radius: 8px;
   transition: all 0.3s ease;
+  cursor: pointer;
 }
 
 header .paginas p.selected {
@@ -70,46 +86,56 @@ header .paginas p.selected {
   font-weight: 700;
 }
 
+/* Cabeçalho principal */
 .cabecalho {
   padding: 15px 20px;
-  color: white;
+  color: #fff;
   background-color: dodgerblue;
-  border-bottom: 1px solid;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
   font-size: 24px;
+  user-select: none;
 }
 
+/* Ícones no cabeçalho */
 .cabecalho i {
   position: relative;
   z-index: 9999;
+  cursor: pointer;
 }
 
+/* Área principal */
 main {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
-main #botao-adicionar-item {
+/* Botão adicionar item */
+#botao-adicionar-item {
   border: 2px dashed #bbb;
   color: #555;
   padding: 12px;
   width: 280px;
   border-radius: 12px;
   background-color: #f0f0f0;
-  transition: all 0.2s ease-in-out;
+  transition: background-color 0.2s ease-in-out, opacity 0.2s;
   text-align: center;
+  user-select: none;
 }
 
-main #botao-adicionar-item:hover {
+#botao-adicionar-item:hover {
   background-color: #e4e4e4;
   cursor: pointer;
 }
 
-main #botao-adicionar-item:active {
+#botao-adicionar-item:active {
   opacity: 0.7;
 }
 
+/* Modal - supondo que "modal" é uma tag customizada, senão troque para .modal */
 modal {
   position: fixed;
   top: 0;
@@ -121,19 +147,25 @@ modal {
   justify-content: center;
   align-items: center;
   z-index: 999;
+  padding: 16px;
+  overflow-y: auto;
 }
 
+/* Container interno do modal */
 modal #container {
   width: 90%;
   max-height: 90%;
   overflow-y: auto;
-  background-color: white;
+  background-color: #fff;
   border: 4px solid #ccc;
   border-radius: 16px;
   padding: 24px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  scrollbar-width: thin;
+  scrollbar-color: dodgerblue transparent;
 }
 
+/* Botão dentro do modal */
 modal #container button {
   width: 100%;
   height: 48px;
@@ -145,20 +177,21 @@ modal #container button {
   border: none;
   border-radius: 8px;
   background-color: dodgerblue;
-  color: white;
+  color: #fff;
   transition: background-color 0.2s;
   margin-top: 16px;
+}
+
+modal #container button:hover {
+  background-color: deepskyblue;
+  cursor: pointer;
 }
 
 modal #container button:active {
   background-color: royalblue;
 }
 
-modal #container button:hover {
-  cursor: pointer;
-  background-color: deepskyblue;
-}
-
+/* Inputs e selects */
 input,
 select {
   border: 1px solid #ccc;
@@ -166,14 +199,24 @@ select {
   padding: 8px;
   width: 100%;
   font-size: 1rem;
+  transition: border-color 0.3s ease;
 }
 
+input:focus,
+select:focus {
+  outline: none;
+  border-color: dodgerblue;
+  box-shadow: 0 0 5px dodgerblue;
+}
+
+/* Listas */
 #lista-despesas,
 #lista-receitas,
 #lista-metas {
   width: 100%;
 }
 
+/* Itens das listas */
 .item {
   background-color: #fff;
   border: 1px solid #ddd;
@@ -184,8 +227,14 @@ select {
   box-shadow: 0 1px 4px rgba(0,0,0,0.05);
   font-size: 0.95rem;
   width: 100%;
+  transition: box-shadow 0.2s ease;
 }
 
+.item:hover {
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+}
+
+/* Cores específicas por tipo */
 .item.despesa {
   border-left-color: #ef4444; /* vermelho */
 }
@@ -198,6 +247,7 @@ select {
   border-left-color: #f59e0b; /* amarelo */
 }
 
+/* Texto dentro dos itens */
 .item strong {
   display: block;
   font-size: 1rem;
@@ -216,6 +266,7 @@ select {
   color: #111827;
 }
 
+/* Navegação lateral */
 nav {
   width: 60%;
   height: 100dvh;
@@ -223,25 +274,28 @@ nav {
   top: 0;
   left: -100%;
   background-color: #222;
-  color: white;
+  color: #fff;
   transition: left 0.3s ease;
   z-index: 999;
   padding-top: 75px;
   overflow-y: auto;
 }
 
+/* Opções da navegação */
 nav #option {
   display: inline-flex;
   gap: 20px;
   padding-left: 20px;
   padding-bottom: 20px;
   font-size: 1.1rem;
+  cursor: pointer;
 }
 
 nav #option:active {
   opacity: 0.5;
 }
 
+/* Responsivo */
 @media screen and (min-width: 720px) {
   modal #container {
     display: grid;
@@ -256,7 +310,7 @@ nav #option:active {
     transform: translateX(-50%);
     width: 60%;
   }
-  
+
   .metricas div {
     min-width: 33%;
   }
