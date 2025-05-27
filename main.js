@@ -60,32 +60,48 @@ $('modal > .metas').on('submit', function(e) {
 });
 
 function renderDespesa(despesa) {
+  const recorrenteBadge = despesa.recorrente.toLowerCase() === 'sim' 
+    ? `<span class="badge badge-recorrente">Recorrente</span>` 
+    : '';
+
+  const tipoBadge = `<span class="badge badge-tipo">${despesa.tipoValor}</span>`;
+
   $('#lista-despesas').append(`
     <div class="item despesa" style="position: relative">
       <p><strong>${despesa.descricao}</strong></p>
       <p>Categoria: ${despesa.categoria}</p>
       <p>Valor: R$ ${parseFloat(despesa.valor).toFixed(2)}</p>
       <p>De: ${despesa.dataInicial} até ${despesa.dataFinal}</p>
-      <p>Recorrente: ${despesa.recorrente}</p>
-      <p>Tipo: ${despesa.tipoValor}</p>
-      <i style="font-size: 1.2rem; color: gray; cursor: pointer; position: absolute; top: 15px; right: 15px" class="fa-solid fa-pen-to-square"></i>
+      ${recorrenteBadge}
+      ${tipoBadge}
+      <i class="fa-solid fa-pen-to-square" 
+         style="font-size:1.2rem; color:gray; cursor:pointer; position:absolute; top:15px; right:15px"></i>
     </div>
   `);
 }
 
+
 function renderReceita(receita) {
+  const recorrenteBadge = receita.recorrente.toLowerCase() === 'sim' 
+    ? `<span class="badge badge-recorrente">Recorrente</span>` 
+    : '';
+
+  const tipoBadge = `<span class="badge badge-tipo">${receita.tipoValor}</span>`;
+
   $('#lista-receitas').append(`
     <div class="item receita" style="position: relative">
       <p><strong>${receita.descricao}</strong></p>
       <p>Categoria: ${receita.categoria}</p>
       <p>Valor: R$ ${parseFloat(receita.valor).toFixed(2)}</p>
       <p>Data: ${receita.data}</p>
-      <p>Recorrente: ${receita.recorrente}</p>
-      <p>Tipo: ${receita.tipoValor}</p>
-      <i style="font-size: 1.2rem; color: gray; cursor: pointer; position: absolute; top: 15px; right: 15px" class="fa-solid fa-pen-to-square"></i>
+      ${recorrenteBadge}
+      ${tipoBadge}
+      <i class="fa-solid fa-pen-to-square" 
+         style="font-size:1.2rem; color:gray; cursor:pointer; position:absolute; top:15px; right:15px"></i>
     </div>
   `);
 }
+
 
 function renderMeta(meta) {
   $('#lista-metas').append(`
