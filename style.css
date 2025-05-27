@@ -80,7 +80,7 @@ header .paginas p.selected {
 
 .cabecalho i {
   position: relative;
-  z-index: 999;
+  z-index: 9999;
 }
 
 main {
@@ -225,7 +225,7 @@ nav {
   background-color: #222;
   color: white;
   transition: left 0.3s ease;
-  z-index: 0;
+  z-index: 999;
   padding-top: 75px;
   overflow-y: auto;
 }
