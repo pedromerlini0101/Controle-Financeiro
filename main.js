@@ -61,35 +61,38 @@ $('modal > .metas').on('submit', function(e) {
 
 function renderDespesa(despesa) {
   $('#lista-despesas').append(`
-    <div class="item despesa">
+    <div class="item despesa" style="position: relative">
       <p><strong>${despesa.descricao}</strong></p>
       <p>Categoria: ${despesa.categoria}</p>
       <p>Valor: R$ ${parseFloat(despesa.valor).toFixed(2)}</p>
       <p>De: ${despesa.dataInicial} até ${despesa.dataFinal}</p>
       <p>Recorrente: ${despesa.recorrente}</p>
       <p>Tipo: ${despesa.tipoValor}</p>
+      <i style="font-size: 1.2rem; color: gray; cursor: pointer; position: absolute; top: 15px; right: 15px" class="fa-solid fa-pen-to-square"></i>
     </div>
   `);
 }
 
 function renderReceita(receita) {
   $('#lista-receitas').append(`
-    <div class="item receita">
+    <div class="item receita" style="position: relative">
       <p><strong>${receita.descricao}</strong></p>
       <p>Categoria: ${receita.categoria}</p>
       <p>Valor: R$ ${parseFloat(receita.valor).toFixed(2)}</p>
       <p>Data: ${receita.data}</p>
       <p>Recorrente: ${receita.recorrente}</p>
       <p>Tipo: ${receita.tipoValor}</p>
+      <i style="font-size: 1.2rem; color: gray; cursor: pointer; position: absolute; top: 15px; right: 15px" class="fa-solid fa-pen-to-square"></i>
     </div>
   `);
 }
 
 function renderMeta(meta) {
   $('#lista-metas').append(`
-    <div class="item meta">
+    <div class="item meta" style="position: relative">
       <p><strong>${meta.descricao}</strong></p>
       <p>De: ${meta.dataInicial} até ${meta.dataFinal}</p>
+      <i style="font-size: 1.2rem; color: gray; cursor: pointer; position: absolute; top: 15px; right: 15px" class="fa-solid fa-pen-to-square"></i>
     </div>
   `);
 }
