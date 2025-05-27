@@ -4,7 +4,7 @@ $('modal > .despesas').on('submit', function(e) {
   
   const despesa = {
     descricao: dados.get('descricao'),
-    categoria: dados.get('categoria'),
+    categoria: dados.get('categoria') !== 'Personalizado'? dados.get('categoria') : dados.get('categoria-personalizado'),
     valor: dados.get('valor'),
     dataInicial: new Date(dados.get('data inicial')).toLocaleDateString(),
     dataFinal: new Date(dados.get('data final')).toLocaleDateString(),
@@ -26,7 +26,7 @@ $('modal > .receitas').on('submit', function(e) {
 
   const receita = {
     descricao: dados.get('descricao'),
-    categoria: dados.get('categoria'),
+    categoria: dados.get('categoria') !== 'Personalizado'? dados.get('categoria') : dados.get('categoria-personalizado'),
     valor: dados.get('valor'),
     data: new Date(dados.get('data')).toLocaleDateString(),
     recorrente: dados.get('recorrente'),
