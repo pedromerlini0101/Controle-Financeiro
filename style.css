@@ -1,3 +1,7 @@
+:root {
+  --theme-color: dodgerblue;
+}
+
 /* Reset básico */
 * {
   margin: 0;
@@ -81,8 +85,8 @@ header .paginas p {
 }
 
 header .paginas p.selected {
-  text-decoration: underline 3px dodgerblue;
-  color: dodgerblue;
+  text-decoration: underline 3px var(--theme-color);
+  color: var(--theme-color);
   font-weight: 700;
 }
 
@@ -90,7 +94,7 @@ header .paginas p.selected {
 .cabecalho {
   padding: 15px 20px;
   color: #fff;
-  background-color: dodgerblue;
+  background-color: var(--theme-color);
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
   font-size: 24px;
   user-select: none;
@@ -162,7 +166,7 @@ modal #container {
   padding: 24px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
   scrollbar-width: thin;
-  scrollbar-color: dodgerblue transparent;
+  scrollbar-color: var(--theme-color) transparent;
 }
 
 /* Botão dentro do modal */
@@ -176,7 +180,7 @@ modal #container button {
   font-weight: 700;
   border: none;
   border-radius: 8px;
-  background-color: dodgerblue;
+  background-color: var(--theme-color);
   color: #fff;
   transition: background-color 0.2s;
   margin-top: 16px;
@@ -205,8 +209,8 @@ select {
 input:focus,
 select:focus {
   outline: none;
-  border-color: dodgerblue;
-  box-shadow: 0 0 5px dodgerblue;
+  border-color: var(--theme-color);
+  box-shadow: 0 0 5px var(--theme-color);
 }
 
 /* Listas */

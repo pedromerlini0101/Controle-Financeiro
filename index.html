@@ -9,25 +9,27 @@
   <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
   <script src="//unpkg.com/alpinejs" defer></script>
   <script src="https://kit.fontawesome.com/1073bdefd9.js" crossorigin="anonymous"></script>
+  <script src="main.js" defer type="module"></script>
 </head>
 
-<body x-data="{pagina: 'despesas', menuOpen: false}">
+<body x-data="{pagina: 'despesas', menuOpen: false}"  @click="if (!($refs.menu.contains($event.target) || $refs.menu_toggle.contains($event.target))) menuOpen = false">
   <header>
     <div class="cabecalho">
-      <i @click="menuOpen = !menuOpen" class="fas fa-bars"></i>
+      <i x-ref="menu_toggle" @click="menuOpen = !menuOpen" class="fas fa-bars"></i>
     </div>
+    
     <div class="metricas">
       <div id="saldo">
         <h2>Saldo Mensal</h2>
-        <p>R$2.000,00</p>
+        <p>R$0.00</p>
       </div>
       <div id="receita">
         <h2>Receita Mensal</h2>
-        <p>R$5.000,00</p>
+        <p>R$0.00</p>
       </div>
       <div id="despesa">
         <h2>Gasto Mensal</h2>
-        <p>R$3.000,00</p>
+        <p>R$0.00</p>
       </div>
     </div>
     <br>
@@ -37,7 +39,7 @@
       <p @click="pagina = $el.textContent" :class="{'selected': pagina === $el.textContent}">metas</p>
     </div>
   </header>
-  <nav :style="`left: ${menuOpen? '0px':'-100%'}`">
+  <nav x-ref="menu" :style="`left: ${menuOpen? '0px':'-100%'}`">
     <br>
     <div id="option">
       <i class="fas fa-home"></i>
@@ -59,7 +61,7 @@
     
     <div id="option">
       <i class="fa-solid fa-microchip"></i>
-      <p>AI</p>
+      <p>IA</p>
     </div>
     <br>
   </nav>
@@ -92,18 +94,6 @@
           <label for="valor-input">Valor<span style="color: tomato">*</span></label>
           <br>
           <input required name="valor" id="valor-input" placeholder="Ex: 350.50" type="number" step="0.01" min="0">
-          <br><br>
-        </div>
-        <div id="data-inicio">
-          <label for="dataI-input">Data de Inicio</label>
-          <br>
-          <input required name="data inicial" id="dataI-input" type="date" :value="new Date().toISOString().split('T')[0]">
-          <br><br>
-        </div>
-        <div id="data-fim">
-          <label for="dataF-input">Data de Fim</label>
-          <br>
-          <input required name="data final" id="dataF-input" type="date" :value="new Date().toISOString().split('T')[0]">
           <br><br>
         </div>
         <div id="recorrente">
@@ -156,12 +146,6 @@
           <input required name="valor" id="valor-input" placeholder="Ex: 350.50" type="number" step="0.01" min="0">
           <br><br>
         </div>
-        <div id="data">
-          <label for="data-input">Data</label>
-          <br>
-          <input name="data" id="data-input" type="date" :value="new Date().toISOString().split('T')[0]">
-          <br><br>
-        </div>
         <div id="recorrente">
           <label>recorrente (acontece todo mês)?<span style="color: red">*</span></label>
           <br>
@@ -190,19 +174,7 @@
           <label for="descricao-input">Descrição<span style="color: tomato">*</span></label>
           <br>
           <input required name="descricao" id="descricao-input" placeholder="Ex: Economizar R$1.000,00">
-          <br><br>
-        </div>
-        <div id="data-inicio">
-          <label for="dataI-input">Data de Inicio</label>
           <br>
-          <input name="data inicial" id="dataI-input" type="date" :value="new Date().toISOString().split('T')[0]">
-          <br><br>
-        </div>
-        <div id="data-fim">
-          <label for="dataF-input">Data de Fim</label>
-          <br>
-          <input name="data final" id="dataF-input" type="date" :value="new Date().toISOString().split('T')[0]">
-          <br><br>
         </div>
         <button type="submit" id="add-button">adicionar</button>
       </form>
@@ -213,6 +185,5 @@
     <div x-cloak x-show="pagina === 'receitas'" id="lista-receitas"></div>
     <div x-cloak x-show="pagina === 'metas'" id="lista-metas"></div>
   </main>
-  <script src="main.js" type="module"></script>
 </body>
 </html>

@@ -1,3 +1,7 @@
+const despesas = []
+const receitas = []
+const metas = []
+
 $('modal > .despesas').on('submit', function(e) {
   e.preventDefault();
   const dados = new FormData(this);
@@ -5,19 +9,17 @@ $('modal > .despesas').on('submit', function(e) {
   const despesa = {
     descricao: dados.get('descricao'),
     categoria: dados.get('categoria') !== 'Personalizado'? dados.get('categoria') : dados.get('categoria-personalizado'),
-    valor: dados.get('valor'),
-    dataInicial: new Date(dados.get('data inicial')).toLocaleDateString(),
-    dataFinal: new Date(dados.get('data final')).toLocaleDateString(),
+    valor: parseFloat(dados.get('valor')),
     recorrente: dados.get('recorrente'),
     tipoValor: dados.get('tipo valor')
   }
-
+  
+  despesas.push(despesa)
+  $('#despesa p').text('R$' + despesasTotal())
+  $('#saldo p').text('R$' + saldoTotal())
+  $('#saldo p').css('color', saldoTotal() < 0? 'tomato':'#6b7280')
   renderDespesa(despesa);
   this.reset(); // limpa o formulário
-  
-  // Repor as datas com a data atual
-  const hoje = new Date().toISOString().split('T')[0];
-  $(this).find('input[type="date"]').val(hoje);
 });
 
 $('modal > .receitas').on('submit', function(e) {
@@ -27,18 +29,17 @@ $('modal > .receitas').on('submit', function(e) {
   const receita = {
     descricao: dados.get('descricao'),
     categoria: dados.get('categoria') !== 'Personalizado'? dados.get('categoria') : dados.get('categoria-personalizado'),
-    valor: dados.get('valor'),
-    data: new Date(dados.get('data')).toLocaleDateString(),
+    valor: parseFloat(dados.get('valor')),
     recorrente: dados.get('recorrente'),
     tipoValor: dados.get('tipo valor')
   }
 
+  receitas.push(receita)
+  $('#receita p').text('R$' + receitasTotal())
+  $('#saldo p').text('R$' + saldoTotal())
+    $('#saldo p').css('color', saldoTotal() < 0? 'tomato':'#6b7280')
   renderReceita(receita);
   this.reset();
-  
-  // Repor as datas com a data atual
-  const hoje = new Date().toISOString().split('T')[0];
-  $(this).find('input[type="date"]').val(hoje);
 });
 
 $('modal > .metas').on('submit', function(e) {
@@ -47,16 +48,11 @@ $('modal > .metas').on('submit', function(e) {
 
   const meta = {
     descricao: dados.get('descricao'),
-    dataInicial: new Date(dados.get('data inicial')).toLocaleDateString(),
-    dataFinal: new Date(dados.get('data final')).toLocaleDateString(),
   }
 
+  metas.push(meta)
   renderMeta(meta);
   this.reset();
-  
-  // Repor as datas com a data atual
-  const hoje = new Date().toISOString().split('T')[0];
-  $(this).find('input[type="date"]').val(hoje);
 });
 
 function renderDespesa(despesa) {
@@ -71,7 +67,6 @@ function renderDespesa(despesa) {
       <p><strong>${despesa.descricao}</strong></p>
       <p>Categoria: ${despesa.categoria}</p>
       <p>Valor: R$ ${parseFloat(despesa.valor).toFixed(2)}</p>
-      <p>De: ${despesa.dataInicial} até ${despesa.dataFinal}</p>
       ${recorrenteBadge}
       ${tipoBadge}
       <i class="fa-solid fa-pen-to-square" 
@@ -79,7 +74,6 @@ function renderDespesa(despesa) {
     </div>
   `);
 }
-
 
 function renderReceita(receita) {
   const recorrenteBadge = receita.recorrente.toLowerCase() === 'sim' 
@@ -93,7 +87,6 @@ function renderReceita(receita) {
       <p><strong>${receita.descricao}</strong></p>
       <p>Categoria: ${receita.categoria}</p>
       <p>Valor: R$ ${parseFloat(receita.valor).toFixed(2)}</p>
-      <p>Data: ${receita.data}</p>
       ${recorrenteBadge}
       ${tipoBadge}
       <i class="fa-solid fa-pen-to-square" 
@@ -102,13 +95,27 @@ function renderReceita(receita) {
   `);
 }
 
-
 function renderMeta(meta) {
   $('#lista-metas').append(`
     <div class="item meta" style="position: relative">
       <p><strong>${meta.descricao}</strong></p>
-      <p>De: ${meta.dataInicial} até ${meta.dataFinal}</p>
       <i style="font-size: 1.2rem; color: gray; cursor: pointer; position: absolute; top: 15px; right: 15px" class="fa-solid fa-pen-to-square"></i>
     </div>
   `);
+}
+
+function despesasTotal() {
+  let i = 0
+  for(let d of despesas) i += d.valor
+  return parseFloat(i).toFixed(2)
+}
+
+function receitasTotal() {
+  let i = 0
+  for(let r of receitas) i += r.valor
+  return parseFloat(i).toFixed(2)
+}
+
+function saldoTotal() {
+  return receitasTotal() - despesasTotal()
 }
