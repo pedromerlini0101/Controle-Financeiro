@@ -68,7 +68,7 @@ function renderDespesa(despesa) {
   const tipoBadge = `<span class="badge badge-tipo">${despesa.tipoValor}</span>`;
 
   $('#lista-despesas').append(`
-    <div id="${despesa.id}" class="item despesa" style="position: relative">
+    <div id="${despesa.id}" class="item despesa" draggable="true" style="position: relative">
       <p><strong>${despesa.descricao}</strong></p>
       <p>Categoria: ${despesa.categoria}</p>
       <p>Valor: R$ ${parseFloat(despesa.valor).toFixed(2)}</p>
@@ -88,7 +88,7 @@ function renderReceita(receita) {
   const tipoBadge = `<span class="badge badge-tipo">${receita.tipoValor}</span>`;
 
   $('#lista-receitas').append(`
-    <div id="${receita.id}" class="item receita" style="position: relative">
+    <div id="${receita.id}" class="item receita" draggable="true" style="position: relative">
       <p><strong>${receita.descricao}</strong></p>
       <p>Categoria: ${receita.categoria}</p>
       <p>Valor: R$ ${parseFloat(receita.valor).toFixed(2)}</p>
@@ -103,7 +103,7 @@ function renderReceita(receita) {
 
 function renderMeta(meta) {
   $('#lista-metas').append(`
-    <div id="${meta.id}" class="item meta" style="position: relative">
+    <div id="${meta.id}" class="item meta" draggable="true" style="position: relative">
       <p><strong>${meta.descricao}</strong></p>
       <i class="fa-solid fa-pen-to-square editar-meta"
          data-id="${meta.id}"
@@ -181,4 +181,50 @@ $(document).on('click', '.editar-meta', function () {
 
   $(`#${id}`).remove();
   renderMeta(item);
+});
+
+// Mostrar a lixeira quando iniciar o drag
+$(document).on('dragstart', '.item', function (e) {
+  $('#lixeira').show();
+  e.originalEvent.dataTransfer.setData('text/plain', $(this).attr('id'));
+});
+
+// Esconder a lixeira quando terminar o drag
+$(document).on('dragend', '.item', function () {
+  $('#lixeira').hide();
+});
+
+// Permitir soltar na lixeira
+$('#lixeira').on('dragover', function (e) {
+  e.preventDefault();
+  $(this).css('background', '#dc2626'); // vermelho mais escuro
+});
+
+$('#lixeira').on('dragleave', function () {
+  $(this).css('background', '#f87171'); // volta ao normal
+});
+
+// Soltar para deletar
+$('#lixeira').on('drop', function (e) {
+  e.preventDefault();
+  const id = e.originalEvent.dataTransfer.getData('text/plain');
+  const $item = $('#' + id);
+
+  if (!$item.length) return;
+
+  if ($item.hasClass('despesa')) {
+    const index = despesas.findIndex(d => d.id == id);
+    if (index !== -1) despesas.splice(index, 1);
+  } else if ($item.hasClass('receita')) {
+    const index = receitas.findIndex(r => r.id == id);
+    if (index !== -1) receitas.splice(index, 1);
+  } else if ($item.hasClass('meta')) {
+    const index = metas.findIndex(m => m.id == id);
+    if (index !== -1) metas.splice(index, 1);
+  }
+
+  $item.remove();
+  atualizarTotais();
+  $(this).css('background', '#f87171'); // reseta cor
+    $('#lixeira').hide();
 });

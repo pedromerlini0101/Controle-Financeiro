@@ -13,6 +13,23 @@
 </head>
 
 <body x-data="{pagina: 'despesas', menuOpen: false}"  @click="if (!($refs.menu.contains($event.target) || $refs.menu_toggle.contains($event.target))) menuOpen = false">
+  <div id="lixeira" style="
+  display: none;
+  position: fixed;
+  bottom: 50%;
+  left: 50%;
+  transform: translate(-50%, 50%);
+  background: #f87171;
+  color: white;
+  padding: 20px;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  z-index: 9999;
+  font-size: 2rem;
+  text-align: center;
+">
+  🗑️
+  </div>
   <header>
     <div class="cabecalho">
       <i x-ref="menu_toggle" @click="menuOpen = !menuOpen" class="fas fa-bars"></i>
