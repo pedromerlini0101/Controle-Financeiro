@@ -9,7 +9,7 @@
   <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
   <script src="//unpkg.com/alpinejs" defer></script>
   <script src="https://kit.fontawesome.com/1073bdefd9.js" crossorigin="anonymous"></script>
-  <script src="main.js" defer type="module"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body x-data="{pagina: 'despesas', menuOpen: false}"  @click="if (!($refs.menu.contains($event.target) || $refs.menu_toggle.contains($event.target))) menuOpen = false">
@@ -35,55 +35,58 @@
       <i x-ref="menu_toggle" @click="menuOpen = !menuOpen" class="fas fa-bars"></i>
     </div>
     
-    <div class="metricas">
-      <div id="saldo">
+    <section id="main-page">
+      <div class="metricas">
+        <div id="saldo">
         <h2>Saldo Mensal</h2>
         <p>R$0.00</p>
       </div>
-      <div id="receita">
+        <div id="receita">
         <h2>Receita Mensal</h2>
         <p>R$0.00</p>
       </div>
-      <div id="despesa">
+        <div id="despesa">
         <h2>Gasto Mensal</h2>
         <p>R$0.00</p>
       </div>
-    </div>
-    <br>
-    <div class="paginas">
-      <p @click="pagina = $el.textContent" :class="{'selected': pagina === $el.textContent}">despesas</p>
-      <p @click="pagina = $el.textContent" :class="{'selected': pagina === $el.textContent}">receitas</p>
-      <p @click="pagina = $el.textContent" :class="{'selected': pagina === $el.textContent}">metas</p>
-    </div>
+      </div>
+      <br>
+      <div class="paginas">
+        <p @click="pagina = $el.textContent" :class="{'selected': pagina === $el.textContent}">despesas</p>
+        <p @click="pagina = $el.textContent" :class="{'selected': pagina === $el.textContent}">receitas</p>
+        <p @click="pagina = $el.textContent" :class="{'selected': pagina === $el.textContent}">metas</p>
+      </div>
+    </section>
   </header>
   <nav x-ref="menu" :style="`left: ${menuOpen? '0px':'-100%'}`">
     <br>
-    <div id="option">
+    <div id="option" class="main-page-btn">
       <i class="fas fa-home"></i>
       <p>Principal</p>
     </div>
     <br>
     
-    <div id="option">
+    <div id="option" class="insights-page-btn">
       <i class="fa-solid fa-chart-line"></i>
-      <p>Gráficos</p>
+      <p>Insights</p>
     </div>
     <br>
     
-    <div id="option">
+    <!--div id="option">
       <i class="fas fa-file"></i>
       <p>Folhas</p>
     </div>
-    <br>
+    <br-->
     
-    <div id="option">
-      <i class="fa-solid fa-microchip"></i>
-      <p>IA</p>
+    <div id="option" class="relatorio-page-btn">
+      <i class="fa-solid fa-file"></i>
+      <p>Relatório</p>
     </div>
     <br>
   </nav>
   <br>
-  <main x-data="{modalOpen: false}">
+  <section id="main-page">
+    <main x-data="{modalOpen: false}">
     <h2 @click="modalOpen = true" x-text="'+ adicionar '+ pagina" id="botao-adicionar-item"></h2>
     <!-- modal de despesas -->
     <modal x-cloak x-show="modalOpen && pagina === 'despesas'">
@@ -202,5 +205,16 @@
     <div x-cloak x-show="pagina === 'receitas'" id="lista-receitas"></div>
     <div x-cloak x-show="pagina === 'metas'" id="lista-metas"></div>
   </main>
+  </section>
+  <section id="relatorio-page">
+    <main></main>
+  </section>
+  <section x-cloak x-show="false" id="insights-page">
+    <main>
+      <canvas id="gastos-categoria"></canvas>
+    </main>
+  </section>
+  <script src="main.js"></script>
+  <script src="insights.js"></script>
 </body>
 </html>

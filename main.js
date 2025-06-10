@@ -14,7 +14,7 @@ $('modal > .despesas').on('submit', function(e) {
     recorrente: dados.get('recorrente'),
     tipoValor: dados.get('tipo valor')
   }
-
+  
   despesas.push(despesa);
   atualizarTotais();
   renderDespesa(despesa);
@@ -79,6 +79,8 @@ function renderDespesa(despesa) {
          style="font-size:1.2rem; color:gray; cursor:pointer; position:absolute; top:15px; right:15px"></i>
     </div>
   `);
+  
+  gerarGraficoDespesasPorCategoria();
 }
 
 function renderReceita(receita) {
@@ -215,6 +217,7 @@ $('#lixeira').on('drop', function (e) {
   if ($item.hasClass('despesa')) {
     const index = despesas.findIndex(d => d.id == id);
     if (index !== -1) despesas.splice(index, 1);
+    gerarGraficoDespesasPorCategoria();
   } else if ($item.hasClass('receita')) {
     const index = receitas.findIndex(r => r.id == id);
     if (index !== -1) receitas.splice(index, 1);
@@ -228,3 +231,22 @@ $('#lixeira').on('drop', function (e) {
   $(this).css('background', '#f87171'); // reseta cor
     $('#lixeira').hide();
 });
+
+// Mudar de Seção
+$('.main-page-btn').on('click', () => {
+  $('[id="main-page"]').show()
+  $('[id="insights-page"]').hide()
+  $('[id="relatorio-page"]').hide()
+})
+
+$('.insights-page-btn').on('click', () => {
+  $('[id="insights-page"]').show()
+  $('[id="main-page"').hide()
+  $('[id="relatorio-page"]').hide()
+})
+
+$('.relatorio-page-btn').on('click', () => {
+  $('[id="relatorio-page"]').show()
+  $('[id="insights-page"]').hide()
+  $('[id="main-page"').hide()
+})
