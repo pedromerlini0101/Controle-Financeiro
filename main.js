@@ -201,8 +201,6 @@ $('.relatorio-page-btn').on('click', () => {
   $('[id="main-page"]').hide();
 });
 
-
-
 function abrirModalEdicao(tipo, item) {
   const $modal = $('#modal-editar');
   const $form = $('#form-editar')[0];
@@ -226,8 +224,7 @@ function abrirModalEdicao(tipo, item) {
 
   // Mostra apenas os necessários
   if (tipo === 'despesa' || tipo === 'receita') {
-    $('.grupo-editar-categoria, .grupo-editar-valor, .grupo-editar-recorrente, .grupo-editar-tipo').show();
-    if (tipo === 'despesa') $('.grupo-editar-data').show();
+    $('.grupo-editar-categoria, .grupo-editar-valor, .grupo-editar-recorrente, .grupo-editar-tipo, .grupo-editar-data').show();
   } else if (tipo === 'meta') {
     $('.grupo-editar-data-inicio, .grupo-editar-data-fim').show();
   }
