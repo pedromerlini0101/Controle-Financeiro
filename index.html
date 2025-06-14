@@ -134,6 +134,17 @@
           </select>
           <br><br>
         </div>
+        <div id="datas">
+          <details>
+            <summary>Definir datas</summary><br>
+            <div style="width: 100%; display: flex; justify-content: space-evenly;">
+              <div>
+                <label>Data</label>
+                <input name="data" type="month">
+              </div>
+            </div>
+          </details>
+        </div>
         <button type="submit" id="add-button">adicionar</button>
       </form>
     </modal>
@@ -184,6 +195,17 @@
           </select>
           <br><br>
         </div>
+        <div id="datas">
+          <details>
+            <summary>Definir datas</summary><br>
+            <div style="width: 100%; display: flex; justify-content: space-evenly;">
+              <div>
+                <label>Data</label>
+                <input name="data" type="month">
+              </div>
+            </div>
+          </details>
+        </div>
         <button type="submit" id="add-button">adicionar</button>
       </form>
     </modal>
@@ -195,6 +217,22 @@
           <br>
           <input required name="descricao" id="descricao-input" placeholder="Ex: Economizar R$1.000,00">
           <br>
+        </div>
+        <br>
+        <div id="datas">
+          <details>
+            <summary>Definir datas</summary><br>
+            <div style="width: 100%; display: flex; justify-content: space-evenly;">
+              <div>
+                <label>início</label>
+                <input name="data-inicio" type="month">
+              </div>
+              <div>
+                <label>fim</label>
+                <input name="data-fim" type="month">
+              </div>
+            </div>
+          </details>
         </div>
         <button type="submit" id="add-button">adicionar</button>
       </form>
@@ -214,6 +252,106 @@
       <canvas id="gastos-categoria"></canvas>
     </main>
   </section>
+  
+  <!-- Modal de edição reutilizável -->
+  <div id="modal-editar" class="modal" style="display: none;">
+  <form id="form-editar" class="modal-form">
+    <input type="hidden" name="tipo" />
+    <input type="hidden" name="id" />
+
+    <label>Descrição</label>
+    <input type="text" name="descricao" required />
+
+    <div class="grupo-editar-categoria">
+      <label>Categoria</label>
+      <input type="text" name="categoria" required />
+    </div>
+
+    <div class="grupo-editar-valor">
+      <label>Valor</label>
+      <input type="number" name="valor" step="0.01" />
+    </div>
+
+    <div class="grupo-editar-recorrente">
+      <label>Recorrente</label>
+      <select name="recorrente">
+        <option>Sim</option>
+        <option>Não</option>
+      </select>
+    </div>
+
+    <div class="grupo-editar-tipo">
+      <label>Tipo de Valor</label>
+      <!--input type="text" name="tipoValor"-->
+      <select name="tipoValor">
+        <option>fixo</option>
+        <option>variável</option>
+      </select>
+    </div>
+
+    <div class="grupo-editar-data">
+      <label>Data</label>
+      <input type="month" name="data" />
+    </div>
+
+    <div class="grupo-editar-data-inicio">
+      <label>Data Início</label>
+      <input type="month" name="dataInicio" />
+    </div>
+
+    <div class="grupo-editar-data-fim">
+      <label>Data Fim</label>
+      <input type="month" name="dataFim" />
+    </div>
+
+    <button type="submit">Salvar</button>
+    <button type="button" id="cancelar-edicao">Cancelar</button>
+  </form>
+</div>
+
+  <!-- CSS básico para o modal -->
+  <style>
+  .modal {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  }
+
+  .modal-form {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 350px;
+    max-height: 80dvh;
+    overflow-y: auto;
+  }
+
+  .modal-form input, .modal-form select, .modal-form button {
+    width: 100%;
+    padding: 0.5rem;
+  }
+
+  .modal-form button {
+    background-color: #3b82f6;
+    border: none;
+    color: white;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .modal-form button[type="button"] {
+    background-color: #9ca3af;
+  }
+</style>
   <script src="main.js"></script>
   <script src="insights.js"></script>
 </body>

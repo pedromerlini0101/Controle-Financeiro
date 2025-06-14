@@ -41,7 +41,7 @@ function gerarGraficoDespesasPorCategoria() {
       plugins: {
         title: {
           display: true,
-          text: 'Despesas',
+          text: 'DESPESAS',
           font: {size: 32}
         },
         legend: {
