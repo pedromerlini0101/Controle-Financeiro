@@ -2,7 +2,7 @@ function gerarGraficoDespesasPorCategoria() {
   // Agrupar e somar despesas por categoria
   const categoriasTotais = {};
 
-  despesas.forEach(d => {
+  itens.filter(i => i.tipo === 'despesas').forEach(d => {
     if (!categoriasTotais[d.categoria]) {
       categoriasTotais[d.categoria] = 0;
     }

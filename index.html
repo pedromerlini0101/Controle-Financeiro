@@ -88,35 +88,46 @@
   <section id="main-page">
     <main x-data="{modalOpen: false}">
     <h2 @click="modalOpen = true" x-text="'+ adicionar '+ pagina" id="botao-adicionar-item"></h2>
-    <!-- modal de despesas -->
-    <modal x-cloak x-show="modalOpen && pagina === 'despesas'">
+    <!-- modal dinâmico -->
+    <modal x-cloak x-show="modalOpen">
       <form @submit.prevent="modalOpen = false" @click.away="modalOpen = false" id="container" class="despesas">
+        <input type="hidden" name="tipo" x-model="pagina">
         <div id="descricao">
           <label for="descricao-input">Descrição<span style="color: tomato">*</span></label>
           <br>
-          <input required name="descricao" id="descricao-input" placeholder="Ex: Compras do mês">
+          <input required name="descricao" id="descricao-input" :placeholder="pagina === 'despesas'? 'Ex: Compras do mês' : (pagina === 'receitas'? 'Ex: Salário' : 'Ex: Economizar dinheiro')">
           <br><br>
         </div>
-        <div x-data="{categoria: ''}" id="categoria">
+        <div x-show="pagina !== 'metas'" x-data="{categoria: ''}" id="categoria">
           <label for="categoria-input">Categoria<span style="color: tomato">*</span></label>
           <br>
           <select x-model="categoria" name="categoria" id="categoria-input">
-            <option>Alimentação</option>
-            <option>Saúde</option>
-            <option>Lazer</option>
-            <option>Contas</option>
+            <!-- opções para despesas -->
+            <option x-show="pagina === 'despesas'">Alimentação</option>
+            <option x-show="pagina === 'despesas'">Saúde</option>
+            <option x-show="pagina === 'despesas'">Lazer</option>
+            <option x-show="pagina === 'despesas'">Contas</option>
+            
+            <!-- opções para receitas -->
+            <option x-show="pagina === 'receitas'">Salário</option>
+            <option x-show="pagina === 'receitas'">Bico</option>
+            <option x-show="pagina === 'receitas'">Comissões</option>
+            <option x-show="pagina === 'receitas'">Hora extra</option>
+            <option x-show="pagina === 'receitas'">Vendas</option>
+            
+            
             <option>Personalizado</option>
           </select>
           <input :required="categoria === 'Personalizado'" x-show="categoria === 'Personalizado'" name="categoria-personalizado" placeholder="Ex: Outro">
           <br><br>
         </div>
-        <div id="valor">
+        <div x-show="pagina !== 'metas'" id="valor">
           <label for="valor-input">Valor<span style="color: tomato">*</span></label>
           <br>
-          <input required name="valor" id="valor-input" placeholder="Ex: 350.50" type="number" step="0.01" min="0">
+          <input :required="pagina !== 'metas'" name="valor" id="valor-input" placeholder="Ex: 500.00" type="number" step="0.01" min="0">
           <br><br>
         </div>
-        <div id="recorrente">
+        <div x-show="pagina !== 'metas'" id="recorrente">
           <label>recorrente (acontece todo mês)?<span style="color: red">*</span></label>
           <br>
           <select name="recorrente">
@@ -125,7 +136,7 @@
           </select>
           <br><br>
         </div>
-        <div id="tipo-valor">
+        <div x-show="pagina !== 'metas'" id="tipo-valor">
           <label for="">tipo de valor<span style="color: red">*</span></label>
           <br>
           <select name="tipo valor">
@@ -138,70 +149,17 @@
           <details>
             <summary>Definir datas</summary><br>
             <div style="width: 100%; display: flex; justify-content: space-evenly;">
-              <div>
+              <div x-show="pagina !== 'metas'">
                 <label>Data</label>
                 <input name="data" type="month">
               </div>
-            </div>
-          </details>
-        </div>
-        <button type="submit" id="add-button">adicionar</button>
-      </form>
-    </modal>
-    <!-- modal de receitas -->
-    <modal x-cloak x-show="modalOpen && pagina === 'receitas'">
-      <form @submit.prevent="modalOpen = false" @click.away="modalOpen = false" id="container" class="receitas">
-        <div id="descricao">
-          <label for="descricao-input">Descrição<span style="color: tomato">*</span></label>
-          <br>
-          <input required name="descricao" id="descricao-input" placeholder="Ex: Salário">
-          <br><br>
-        </div>
-        <div x-data="{categoria: ''}" id="categoria">
-          <label for="categoria-input">Categoria<span style="color: tomato">*</span></label>
-          <br>
-          <select x-model="categoria" name="categoria" id="categoria-input">
-            <option>Salário</option>
-            <option>Bico</option>
-            <option>Comissões</option>
-            <option>Hora extra</option>
-            <option>Vendas</option>
-            <option>Personalizado</option>
-          </select>
-          <input :required="categoria === 'Personalizado'" x-show="categoria === 'Personalizado'" name="categoria-personalizado" placeholder="Ex: Outro">
-          <br><br>
-        </div>
-        <div id="valor">
-          <label for="valor-input">Valor<span style="color: tomato">*</span></label>
-          <br>
-          <input required name="valor" id="valor-input" placeholder="Ex: 350.50" type="number" step="0.01" min="0">
-          <br><br>
-        </div>
-        <div id="recorrente">
-          <label>recorrente (acontece todo mês)?<span style="color: red">*</span></label>
-          <br>
-          <select name="recorrente">
-            <option>sim</option>
-            <option>não</option>
-          </select>
-          <br><br>
-        </div>
-        <div id="tipo-valor">
-          <label for="">tipo de valor<span style="color: red">*</span></label>
-          <br>
-          <select name="tipo valor">
-            <option>fixo</option>
-            <option>variável</option>
-          </select>
-          <br><br>
-        </div>
-        <div id="datas">
-          <details>
-            <summary>Definir datas</summary><br>
-            <div style="width: 100%; display: flex; justify-content: space-evenly;">
-              <div>
-                <label>Data</label>
-                <input name="data" type="month">
+              <div x-show="pagina === 'metas'">
+                <label>Inicio</label>
+                <input name="dataInicio" type="month">
+              </div>
+              <div x-show="pagina === 'metas'">
+                <label>Fim</label>
+                <input name="dataFim" type="month">
               </div>
             </div>
           </details>
@@ -209,35 +167,6 @@
         <button type="submit" id="add-button">adicionar</button>
       </form>
     </modal>
-    <!-- modal de metas -->
-    <modal x-cloak x-show="modalOpen && pagina === 'metas'">
-      <form @submit.prevent="modalOpen = false" @click.away="modalOpen = false" id="container" class="metas">
-        <div id="descricao">
-          <label for="descricao-input">Descrição<span style="color: tomato">*</span></label>
-          <br>
-          <input required name="descricao" id="descricao-input" placeholder="Ex: Economizar R$1.000,00">
-          <br>
-        </div>
-        <br>
-        <div id="datas">
-          <details>
-            <summary>Definir datas</summary><br>
-            <div style="width: 100%; display: flex; justify-content: space-evenly;">
-              <div>
-                <label>início</label>
-                <input name="data-inicio" type="month">
-              </div>
-              <div>
-                <label>fim</label>
-                <input name="data-fim" type="month">
-              </div>
-            </div>
-          </details>
-        </div>
-        <button type="submit" id="add-button">adicionar</button>
-      </form>
-    </modal>
-    
     <br>
     <div x-cloak x-show="pagina === 'despesas'" id="lista-despesas"></div>
     <div x-cloak x-show="pagina === 'receitas'" id="lista-receitas"></div>
@@ -252,106 +181,6 @@
       <canvas id="gastos-categoria"></canvas>
     </main>
   </section>
-  
-  <!-- Modal de edição reutilizável -->
-  <div id="modal-editar" class="modal" style="display: none;">
-  <form id="form-editar" class="modal-form">
-    <input type="hidden" name="tipo" />
-    <input type="hidden" name="id" />
-
-    <label>Descrição</label>
-    <input type="text" name="descricao" required />
-
-    <div class="grupo-editar-categoria">
-      <label>Categoria</label>
-      <input type="text" name="categoria" required />
-    </div>
-
-    <div class="grupo-editar-valor">
-      <label>Valor</label>
-      <input type="number" name="valor" step="0.01" />
-    </div>
-
-    <div class="grupo-editar-recorrente">
-      <label>Recorrente</label>
-      <select name="recorrente">
-        <option>Sim</option>
-        <option>Não</option>
-      </select>
-    </div>
-
-    <div class="grupo-editar-tipo">
-      <label>Tipo de Valor</label>
-      <!--input type="text" name="tipoValor"-->
-      <select name="tipoValor">
-        <option>fixo</option>
-        <option>variável</option>
-      </select>
-    </div>
-
-    <div class="grupo-editar-data">
-      <label>Data</label>
-      <input type="month" name="data" />
-    </div>
-
-    <div class="grupo-editar-data-inicio">
-      <label>Data Início</label>
-      <input type="month" name="dataInicio" />
-    </div>
-
-    <div class="grupo-editar-data-fim">
-      <label>Data Fim</label>
-      <input type="month" name="dataFim" />
-    </div>
-
-    <button type="submit">Salvar</button>
-    <button type="button" id="cancelar-edicao">Cancelar</button>
-  </form>
-</div>
-
-  <!-- CSS básico para o modal -->
-  <style>
-  .modal {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    background: rgba(0,0,0,0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-  }
-
-  .modal-form {
-    background: white;
-    padding: 2rem;
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    width: 350px;
-    max-height: 80dvh;
-    overflow-y: auto;
-  }
-
-  .modal-form input, .modal-form select, .modal-form button {
-    width: 100%;
-    padding: 0.5rem;
-  }
-
-  .modal-form button {
-    background-color: #3b82f6;
-    border: none;
-    color: white;
-    font-weight: bold;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-
-  .modal-form button[type="button"] {
-    background-color: #9ca3af;
-  }
-</style>
   <script src="main.js"></script>
   <script src="insights.js"></script>
 </body>

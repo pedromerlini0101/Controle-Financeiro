@@ -239,15 +239,15 @@ select:focus {
 }
 
 /* Cores específicas por tipo */
-.item.despesa {
+.item.despesas {
   border-left-color: #ef4444; /* vermelho */
 }
 
-.item.receita {
+.item.receitas {
   border-left-color: #10b981; /* verde */
 }
 
-.item.meta {
+.item.metas {
   border-left-color: #f59e0b; /* amarelo */
 }
 
