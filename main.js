@@ -1,31 +1,36 @@
 const itens = [];
 
 // ➕ Item
-$('modal form').on('submit', function(e) {
+$('modal form').on('submit', function (e) {
   e.preventDefault();
   const dados = new FormData(this);
-  const editando = dados.get('editando-id')? true:false
-  
+  const editandoId = dados.get('editando-id');
+
   const item = {
-    id: Date.now(),
+    id: editandoId ? Number(editandoId) : Date.now(),
     tipo: dados.get('tipo'),
     descricao: dados.get('descricao'),
     categoria: (dados.get('categoria') !== 'Personalizado' ? dados.get('categoria') : dados.get('categoria-personalizado')) || '',
-    valor: parseFloat(dados.get('valor')) || '',
+    valor: parseFloat(dados.get('valor')) || 0,
     recorrente: dados.get('recorrente') || '',
     tipoValor: dados.get('tipo_valor') || '',
     data: dados.get('data') || '',
     dataInicio: dados.get('dataInicio') || '',
     dataFim: dados.get('dataFim') || ''
   };
-  
-  if(editando){
-    console.log('editando')
-  }else{
+
+  if (editandoId) {
+    const index = itens.findIndex(i => i.id === Number(editandoId));
+    if (index !== -1) {
+      itens[index] = item;
+      $(`#${item.id}`).remove(); // remove antigo
+      renderItem(item, item.tipo); // re-renderiza
+    }
+  } else {
     itens.push(item);
     renderItem(item, item.tipo);
   }
-  
+
   atualizarTotais();
   this.reset();
 });
@@ -145,24 +150,26 @@ $('.relatorio-page-btn').on('click', () => {
 });
 
 // Abrir modal ao editar
-$(document).on('click', '.fa-pen-to-square', function() {
-  const id = $(this).data('id')
-  const item = itens.find(i => i.id === id)
-  
-  if(!item) return
-  
-  const el = document.querySelector('#main-page main')
-  Alpine.$data(el).modalOpen = true
-  
-  const form = $('#container')
-  form.find('[name="editando-id"]').val(item.id)
-  form.find('[name="descricao"]').val(item.descricao)
-  form.find('[name="categoria"]').val(item.categoria)
-  //form.find('[name="categoria-personalizado"]').val(item['categoria-personalizado'] || '')
-  form.find('[name="valor"]').val(item.valor || '')
-  form.find('[name="data"]').val(item.data || '')
-  form.find('[name="dataInicio"]').val(item.dataInicio || '')
-  form.find('[name="dataFim"]').val(item.dataFim || '')
-  form.find('[name="recorrente"]').val(item.recorrente || '')
-  form.find('[name="tipo_valor"]').val(item.tipoValor || '')
-})
+$(document).on('click', '.fa-pen-to-square', function () {
+  const id = $(this).data('id');
+  const item = itens.find(i => i.id === id);
+  if (!item) return;
+
+  const el = document.querySelector('#main-page main');
+  Alpine.$data(el).modalOpen = true;
+
+  const form = $('#container');
+  form.find('[name="editando-id"]').remove(); // evita duplicatas
+  form.prepend(`<input type="hidden" name="editando-id" value="${item.id}">`);
+
+  form.find('[name="tipo"]').val(item.tipo);
+  form.find('[name="descricao"]').val(item.descricao);
+  form.find('[name="categoria"]').val(item.categoria);
+  form.find('[name="categoria-personalizado"]').val(item.categoria || '');
+  form.find('[name="valor"]').val(item.valor || '');
+  form.find('[name="data"]').val(item.data || '');
+  form.find('[name="dataInicio"]').val(item.dataInicio || '');
+  form.find('[name="dataFim"]').val(item.dataFim || '');
+  form.find('[name="recorrente"]').val(item.recorrente || '');
+  form.find('[name="tipo_valor"]').val(item.tipoValor || '');
+});
