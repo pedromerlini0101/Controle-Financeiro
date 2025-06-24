@@ -87,11 +87,13 @@
   <br>
   <section id="main-page">
     <main x-data="{modalOpen: false}">
-    <h2 @click="modalOpen = true" x-text="'+ adicionar '+ pagina" id="botao-adicionar-item"></h2>
+    <h2 @click="modalOpen = true; " x-text="'+ adicionar '+ pagina" id="botao-adicionar-item"></h2>
     <!-- modal dinâmico -->
     <modal x-cloak x-show="modalOpen">
       <form @submit.prevent="modalOpen = false" @click.away="modalOpen = false" id="container" class="despesas">
         <input type="hidden" name="tipo" x-model="pagina">
+        <input type="hidden" name="editando-id">
+        
         <div id="descricao">
           <label for="descricao-input">Descrição<span style="color: tomato">*</span></label>
           <br>
@@ -139,7 +141,7 @@
         <div x-show="pagina !== 'metas'" id="tipo-valor">
           <label for="">tipo de valor<span style="color: red">*</span></label>
           <br>
-          <select name="tipo valor">
+          <select name="tipo_valor">
             <option>fixo</option>
             <option>variável</option>
           </select>

@@ -4,6 +4,7 @@ const itens = [];
 $('modal form').on('submit', function(e) {
   e.preventDefault();
   const dados = new FormData(this);
+  const editando = dados.get('editando-id')? true:false
   
   const item = {
     id: Date.now(),
@@ -12,15 +13,20 @@ $('modal form').on('submit', function(e) {
     categoria: (dados.get('categoria') !== 'Personalizado' ? dados.get('categoria') : dados.get('categoria-personalizado')) || '',
     valor: parseFloat(dados.get('valor')) || '',
     recorrente: dados.get('recorrente') || '',
-    tipoValor: dados.get('tipo valor') || '',
+    tipoValor: dados.get('tipo_valor') || '',
     data: dados.get('data') || '',
     dataInicio: dados.get('dataInicio') || '',
     dataFim: dados.get('dataFim') || ''
   };
   
-  itens.push(item);
+  if(editando){
+    console.log('editando')
+  }else{
+    itens.push(item);
+    renderItem(item, item.tipo);
+  }
+  
   atualizarTotais();
-  renderItem(item, item.tipo);
   this.reset();
 });
 
@@ -137,3 +143,26 @@ $('.relatorio-page-btn').on('click', () => {
   $('[id="insights-page"]').hide();
   $('[id="main-page"]').hide();
 });
+
+// Abrir modal ao editar
+$(document).on('click', '.fa-pen-to-square', function() {
+  const id = $(this).data('id')
+  const item = itens.find(i => i.id === id)
+  
+  if(!item) return
+  
+  const el = document.querySelector('#main-page main')
+  Alpine.$data(el).modalOpen = true
+  
+  const form = $('#container')
+  form.find('[name="editando-id"]').val(item.id)
+  form.find('[name="descricao"]').val(item.descricao)
+  form.find('[name="categoria"]').val(item.categoria)
+  //form.find('[name="categoria-personalizado"]').val(item['categoria-personalizado'] || '')
+  form.find('[name="valor"]').val(item.valor || '')
+  form.find('[name="data"]').val(item.data || '')
+  form.find('[name="dataInicio"]').val(item.dataInicio || '')
+  form.find('[name="dataFim"]').val(item.dataFim || '')
+  form.find('[name="recorrente"]').val(item.recorrente || '')
+  form.find('[name="tipo_valor"]').val(item.tipoValor || '')
+})
