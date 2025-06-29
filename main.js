@@ -31,7 +31,9 @@ $('modal form').on('submit', function (e) {
     renderItem(item, item.tipo);
   }
 
+  gerarGraficoDespesasPorCategoria()
   atualizarTotais();
+  $(this).find('[name="editando-id"]').remove()
   this.reset();
 });
 
