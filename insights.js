@@ -1,4 +1,8 @@
 function gerarGraficoDespesasPorCategoria() {
+  // Limpa conteúdo anterior
+  const container = $('#insights-page main');
+  container.empty();
+
   // Agrupar e somar despesas por categoria
   const categoriasTotais = {};
 
@@ -9,30 +13,28 @@ function gerarGraficoDespesasPorCategoria() {
     categoriasTotais[d.categoria] += d.valor;
   });
 
-  // Extrair labels (categorias) e data (totais)
   const labels = Object.keys(categoriasTotais);
   const data = Object.values(categoriasTotais);
 
-  // Cores aleatórias para cada categoria
   const backgroundColor = labels.map(() =>
     `hsl(${Math.floor(Math.random() * 360)}, 70%, 60%)`
   );
 
-  // Destruir gráfico anterior se já existir
-  if (window.meuGrafico) {
-    window.meuGrafico.destroy();
-  }
+  // Cria dinamicamente o canvas
+  const canvas = $('<canvas id="grafico-despesas-categoria"></canvas>');
+  container.append(canvas);
 
-  const ctx = document.getElementById('gastos-categoria').getContext('2d');
+  // Agora sim o canvas existe no DOM, então pode usar getContext
+  const ctx = document.getElementById('grafico-despesas-categoria').getContext('2d');
 
-  window.meuGrafico = new Chart(ctx, {
+  new Chart(ctx, {
     type: 'pie',
     data: {
-      labels: labels,
+      labels,
       datasets: [{
         label: 'Gasto Total',
-        data: data,
-        backgroundColor: backgroundColor,
+        data,
+        backgroundColor,
         borderColor: 'transparent'
       }]
     },
@@ -41,8 +43,8 @@ function gerarGraficoDespesasPorCategoria() {
       plugins: {
         title: {
           display: true,
-          text: 'DESPESAS',
-          font: {size: 32}
+          text: 'Gastos por Categoria',
+          font: { size: 24 }
         },
         legend: {
           position: 'right'
@@ -50,4 +52,106 @@ function gerarGraficoDespesasPorCategoria() {
       }
     }
   });
+}
+function gerarGraficoMensal() {
+  const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+  const despesas = new Array(12).fill(0);
+  const receitas = new Array(12).fill(0);
+
+  const anoAtual = new Date().getFullYear();
+
+  itens.forEach(i => {
+    const data = i.data;
+    if (!data) return;
+    const [ano, mes] = data.split('-').map(Number);
+    if (ano === anoAtual) {
+      if (i.tipo === 'despesas') despesas[mes - 1] += Number(i.valor);
+      if (i.tipo === 'receitas') receitas[mes - 1] += Number(i.valor);
+    }
+  });
+
+  const ctx = document.createElement('canvas');
+  ctx.id = 'grafico-mensal';
+  $('#insights-page main').append(ctx);
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: meses,
+      datasets: [
+        {
+          label: 'Despesas',
+          data: despesas,
+          backgroundColor: 'tomato'
+        },
+        {
+          label: 'Receitas',
+          data: receitas,
+          backgroundColor: 'mediumseagreen'
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        title: {
+          display: true,
+          text: `Despesas e Receitas (${anoAtual})`,
+          font: { size: 20 }
+        }
+      }
+    }
+  });
+}
+
+function gerarGraficoSaldoMensal() {
+  const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+  const saldo = new Array(12).fill(0);
+
+  const anoAtual = new Date().getFullYear();
+
+  itens.forEach(i => {
+    const data = i.data;
+    if (!data) return;
+    const [ano, mes] = data.split('-').map(Number);
+    if (ano === anoAtual) {
+      const valor = Number(i.valor);
+      saldo[mes - 1] += i.tipo === 'receitas' ? valor : -valor;
+    }
+  });
+
+  const ctx = document.createElement('canvas');
+  ctx.id = 'grafico-saldo';
+  $('#insights-page main').append(ctx);
+
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: meses,
+      datasets: [{
+        label: 'Saldo Mensal',
+        data: saldo,
+        borderColor: '#3b82f6',
+        fill: false,
+        tension: 0.3
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        title: {
+          display: true,
+          text: 'Evolução do Saldo Mensal',
+          font: { size: 20 }
+        }
+      }
+    }
+  });
+}
+
+function gerarTodosGraficos() {
+  $('#insights-page main').empty(); // limpa gráficos antigos
+  gerarGraficoDespesasPorCategoria();
+  gerarGraficoMensal();
+  gerarGraficoSaldoMensal();
 }
