@@ -53,20 +53,30 @@ function gerarGraficoDespesasPorCategoria() {
     }
   });
 }
+
 function gerarGraficoMensal() {
   const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
   const despesas = new Array(12).fill(0);
   const receitas = new Array(12).fill(0);
-
   const anoAtual = new Date().getFullYear();
 
   itens.forEach(i => {
-    const data = i.data;
-    if (!data) return;
-    const [ano, mes] = data.split('-').map(Number);
-    if (ano === anoAtual) {
-      if (i.tipo === 'despesas') despesas[mes - 1] += Number(i.valor);
-      if (i.tipo === 'receitas') receitas[mes - 1] += Number(i.valor);
+    if (!i.data) return;
+    const [ano, mes] = i.data.split('-').map(Number);
+    if (ano !== anoAtual) return;
+
+    const valor = Number(i.valor);
+    const isRecorrente = i.recorrente?.toLowerCase() === 'sim';
+
+    if (isRecorrente) {
+      for (let m = 0; m < 12; m++) {
+        if (i.tipo === 'despesas') despesas[m] += valor;
+        if (i.tipo === 'receitas') receitas[m] += valor;
+      }
+    } else {
+      const index = mes - 1;
+      if (i.tipo === 'despesas') despesas[index] += valor;
+      if (i.tipo === 'receitas') receitas[index] += valor;
     }
   });
 
@@ -107,16 +117,23 @@ function gerarGraficoMensal() {
 function gerarGraficoSaldoMensal() {
   const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
   const saldo = new Array(12).fill(0);
-
   const anoAtual = new Date().getFullYear();
 
   itens.forEach(i => {
-    const data = i.data;
-    if (!data) return;
-    const [ano, mes] = data.split('-').map(Number);
-    if (ano === anoAtual) {
-      const valor = Number(i.valor);
-      saldo[mes - 1] += i.tipo === 'receitas' ? valor : -valor;
+    if (!i.data) return;
+    const [ano, mes] = i.data.split('-').map(Number);
+    if (ano !== anoAtual) return;
+
+    const valor = Number(i.valor);
+    const isRecorrente = i.recorrente?.toLowerCase() === 'sim';
+
+    if (isRecorrente) {
+      for (let m = 0; m < 12; m++) {
+        saldo[m] += i.tipo === 'receitas' ? valor : -valor;
+      }
+    } else {
+      const index = mes - 1;
+      saldo[index] += i.tipo === 'receitas' ? valor : -valor;
     }
   });
 

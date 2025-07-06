@@ -33,6 +33,7 @@ $('modal form').on('submit', function (e) {
 
   gerarTodosGraficos()
   atualizarTotais();
+  salvarDados()
   $(this).find('[name="editando-id"]').remove()
   this.reset();
 });
@@ -130,6 +131,7 @@ $('#lixeira').on('drop', function (e) {
 
   $item.remove();
   atualizarTotais();
+  salvarDados()
   $(this).css('background', '#f87171');
   $('#lixeira').hide();
 });
@@ -174,4 +176,29 @@ $(document).on('click', '.fa-pen-to-square', function () {
   form.find('[name="dataFim"]').val(item.dataFim || '');
   form.find('[name="recorrente"]').val(item.recorrente || '');
   form.find('[name="tipo_valor"]').val(item.tipoValor || '');
+});
+
+function salvarDados() {
+  localStorage.setItem('itens-financas', JSON.stringify(itens));
+}
+
+function carregarDados() {
+  const dadosSalvos = localStorage.getItem('itens-financas');
+  if (dadosSalvos) {
+    const dados = JSON.parse(dadosSalvos);
+    dados.forEach(item => {
+      itens.push(item);
+      renderItem(item, item.tipo);
+    });
+    atualizarTotais();
+    gerarTodosGraficos();
+  }
+}
+
+function limparDados() {
+  localStorage.removeItem('itens-financas');
+}
+
+$(document).ready(function () {
+  carregarDados();
 });
