@@ -58,6 +58,7 @@ function gerarGraficoMensal() {
   const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
   const despesas = new Array(12).fill(0);
   const receitas = new Array(12).fill(0);
+  const saldos = new Array(12).fill(0);
   const anoAtual = new Date().getFullYear();
 
   itens.forEach(i => {
@@ -67,18 +68,23 @@ function gerarGraficoMensal() {
 
     const valor = Number(i.valor);
     const isRecorrente = i.recorrente?.toLowerCase() === 'sim';
-
+    
     if (isRecorrente) {
       for (let m = 0; m < 12; m++) {
         if (i.tipo === 'despesas') despesas[m] += valor;
         if (i.tipo === 'receitas') receitas[m] += valor;
       }
-    } else {
+    }
+    else {
       const index = mes - 1;
       if (i.tipo === 'despesas') despesas[index] += valor;
       if (i.tipo === 'receitas') receitas[index] += valor;
     }
   });
+  
+  for(let m = 0; m < 12; m++){
+    saldos[m] = receitas[m] - despesas[m];
+  }
 
   const ctx = document.createElement('canvas');
   ctx.id = 'grafico-mensal';
@@ -93,6 +99,11 @@ function gerarGraficoMensal() {
           label: 'Despesas',
           data: despesas,
           backgroundColor: 'tomato'
+        },
+        {
+          label: 'Saldos',
+          data: saldos,
+          backgroundColor: 'royalblue'
         },
         {
           label: 'Receitas',
