@@ -137,20 +137,45 @@ $('#lixeira').on('drop', function (e) {
 });
 
 // Navegação
+$('[id="main-page"]').show();
+$('[id="insights-page"]').hide();
+$('[id="relatorio-page"]').hide();
+  
 $('.main-page-btn').on('click', () => {
   $('[id="main-page"]').show();
   $('[id="insights-page"]').hide();
   $('[id="relatorio-page"]').hide();
 });
+
 $('.insights-page-btn').on('click', () => {
   $('[id="insights-page"]').show();
   $('[id="main-page"]').hide();
   $('[id="relatorio-page"]').hide();
 });
-$('.relatorio-page-btn').on('click', () => {
+
+$('.relatorio-page-btn').on('click', async() => {
   $('[id="relatorio-page"]').show();
   $('[id="insights-page"]').hide();
   $('[id="main-page"]').hide();
+  
+  const API_KEY = '******';
+  const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
+  const prompt = 'Você é um agente financeiro profissional, analise meus dados e gere um relatório em html; dados: ' + JSON.stringify(itens);
+  
+  const request = await fetch(`${GEMINI_URL}?key=${API_KEY}`, {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({
+      contents: [{role: 'user', parts: [{text: prompt}]}],
+      generationConfig: {temperature: 0, topP: 1, maxOutputTokens: 4096}
+    })
+  });
+  
+  const response = await request.json();
+  const text = response.candidates?.[0]?.content?.parts?.[0]?.text || 'Falha ao gerar resposta';
+  
+  await new Promise(resolve => setTimeout(resolve, 2500)); // delay de 2.5s
+  $('#relatorio-page').html(`<pre style="padding-left: 20px">${text}</pre>`);
 });
 
 // Abrir modal ao editar

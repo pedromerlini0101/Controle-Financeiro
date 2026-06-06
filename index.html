@@ -24,7 +24,7 @@
   padding: 20px;
   border-radius: 50%;
   box-shadow: 0 0 10px rgba(0,0,0,0.3);
-  z-index: 9999;
+  z-index: 2;
   font-size: 2rem;
   text-align: center;
 ">
@@ -36,20 +36,6 @@
     </div>
     
     <section id="main-page">
-      <!--div class="metricas">
-        <div id="saldo">
-        <h2>Saldo Mensal</h2>
-        <p>R$0.00</p>
-      </div>
-        <div id="receita">
-        <h2>Receita Mensal</h2>
-        <p>R$0.00</p>
-      </div>
-        <div id="despesa">
-        <h2>Gasto Mensal</h2>
-        <p>R$0.00</p>
-      </div>
-      </div-->
       <br>
       <div class="paginas">
         <p @click="pagina = $el.textContent" :class="{'selected': pagina === $el.textContent}">despesas</p>
@@ -176,7 +162,11 @@
   </main>
   </section>
   <section id="relatorio-page">
-    <main></main>
+    <main>
+      <h4>Gerando relatório com IA... espere um momento</h4>
+      <br>
+      <div class="loading"></div>
+    </main>
   </section>
   <section x-cloak x-show="false" id="insights-page">
     <main>
