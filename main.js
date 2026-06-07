@@ -158,16 +158,16 @@ $('.relatorio-page-btn').on('click', async() => {
   $('[id="insights-page"]').hide();
   $('[id="main-page"]').hide();
   
-  const API_KEY = '******';
-  const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
-  const prompt = 'Você é um agente financeiro profissional, analise meus dados e gere um relatório em html; dados: ' + JSON.stringify(itens);
+  const API_KEY = '';
+  const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent";
+  const prompt = 'Você é um agente financeiro profissional, analise meus dados e gere um relatório com análises, dicas e insights. Direto ao ponto, com tags html e estilização e sem nenhuma conversa exta; dados: ' + JSON.stringify(itens);
   
   const request = await fetch(`${GEMINI_URL}?key=${API_KEY}`, {
     method: 'POST',
     headers: {'Content-Type':'application/json'},
     body: JSON.stringify({
       contents: [{role: 'user', parts: [{text: prompt}]}],
-      generationConfig: {temperature: 0, topP: 1, maxOutputTokens: 4096}
+      generationConfig: {temperature: 0, topP: 1, maxOutputTokens: 8192}
     })
   });
   
