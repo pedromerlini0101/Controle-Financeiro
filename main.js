@@ -175,7 +175,7 @@ $('.relatorio-page-btn').on('click', async() => {
   const text = response.candidates?.[0]?.content?.parts?.[0]?.text || 'Falha ao gerar resposta';
   
   await new Promise(resolve => setTimeout(resolve, 2500)); // delay de 2.5s
-  $('#relatorio-page').html(`<pre style="padding-left: 20px">${text}</pre>`);
+  $('#relatorio-page').html(`<p style="padding-left: 20px">${text}</p>`);
 });
 
 // Abrir modal ao editar

@@ -34,7 +34,6 @@
     <div class="cabecalho">
       <i x-ref="menu_toggle" @click="menuOpen = !menuOpen" class="fas fa-bars"></i>
     </div>
-    
     <section id="main-page">
       <div class="paginas">
         <p @click="pagina = $el.textContent" :class="{'selected': pagina === $el.textContent}">despesas</p>
